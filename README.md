@@ -30,6 +30,32 @@ A dynamic news website where users can browse a curated list of news articles, v
 
 ---
 
+## 📁 Directory Structure
+
+```
+c:/xampp/htdocs/web tech/newswebsite/
+├── add_to_fav_news.php
+├── db.php
+├── fav_news_screen.php
+├── get_fav_news.php
+├── index.php
+├── news_details.html
+├── README.md
+├── remove_fav_news.php
+├── css/
+│   ├── fav_styles.css
+│   ├── show_details.css
+│   └── styles.css
+├── script/
+│   ├── data.js
+│   ├── fav_script.js
+│   ├── fetch_news.js
+│   ├── script.js
+│   └── show_details.js
+```
+
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License.
