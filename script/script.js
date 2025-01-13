@@ -1,6 +1,6 @@
 import { fetchNewsByCategory, fetchNewsByChannel, fetchGeneralNews } from "./fetch_news.js";
 
-const newsChannelMap = {
+export const newsChannelMap = {
   Time: "time",
   "USA Today": "usa-today",
   "Vice News": "vice-news",
@@ -11,11 +11,13 @@ const categories = ["General", "Fashion", "Technology", "Sports", "Health", "Sci
 
 let currentCategory = categories[0];
 let currentChannel = Object.keys(newsChannelMap)[0];
+let currentHeadlineIndex = 0;
+let headlines = [];
 
 // Function to display news articles in the grid
 function displayNews(articles) {
   const newsGrid = document.getElementById("newsGrid");
-  if (!newsGrid) return; // Check if newsGrid exists
+  if (!newsGrid) return;
 
   newsGrid.innerHTML = "";
 
@@ -30,6 +32,27 @@ function displayNews(articles) {
     `;
     newsGrid.appendChild(newsItem);
   });
+}
+
+// Function to display headlines in the banner
+function displayHeadlines(articles) {
+  const headlineContainer = document.getElementById("headlineContainer");
+  if (!headlineContainer) return;
+
+  headlines = articles;
+  currentHeadlineIndex = 0;
+  showCurrentHeadline();
+}
+
+function showCurrentHeadline() {
+  const headlineContainer = document.getElementById("headlineContainer");
+  if (!headlineContainer || !headlines.length) return;
+
+  const article = headlines[currentHeadlineIndex];
+  headlineContainer.innerHTML = `
+    <h2>${article.title}</h2>
+    <p>${article.description}</p>
+  `;
 }
 
 // Function to handle category selection
@@ -55,17 +78,33 @@ function init() {
     categoryButtons.appendChild(button);
   });
 
-  // Set up channel buttons
-  const channelButtons = document.getElementById("channelButtons");
+  // Set up channel dropdown
+  const channelSelect = document.getElementById("channelSelect");
   Object.keys(newsChannelMap).forEach(channel => {
-    const button = document.createElement("button");
-    button.textContent = channel;
-    button.addEventListener("click", () => handleChannelSelection(channel));
-    channelButtons.appendChild(button);
+    const option = document.createElement("option");
+    option.value = channel;
+    option.textContent = channel;
+    channelSelect.appendChild(option);
+  });
+  channelSelect.addEventListener("change", (e) => {
+    handleChannelSelection(e.target.value);
   });
 
-  // Fetch initial news
+  // Set up banner navigation
+  const prevBtn = document.querySelector(".prev-btn");
+  const nextBtn = document.querySelector(".next-btn");
+  prevBtn.addEventListener("click", () => {
+    currentHeadlineIndex = (currentHeadlineIndex - 1 + headlines.length) % headlines.length;
+    showCurrentHeadline();
+  });
+  nextBtn.addEventListener("click", () => {
+    currentHeadlineIndex = (currentHeadlineIndex + 1) % headlines.length;
+    showCurrentHeadline();
+  });
+
+  // Fetch initial news and headlines
   fetchNewsByCategory(currentCategory).then(displayNews);
+  fetchGeneralNews().then(displayHeadlines);
 }
 
 // Initialize the page when loaded

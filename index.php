@@ -9,12 +9,22 @@
 </head>
 
 <body>
-    <nav>
+    <nav class="nav">
         <div class="logo">E-NEWS</div>
-        <div id="fav-news"><a href="fav_news_screen.php">Favourite News</a></div>
+        <div class="nav-controls">
+            <div class="channel-select">
+                <select id="channelSelect">
+                    <option value="">Select Channel</option>
+                </select>
+            </div>
+            <div id="fav-news"><a href="fav_news_screen.php">Favourite News</a></div>
+        </div>
     </nav>
+
     <div class="banner-container">
-        <div class="banner" id="newsBanner"></div>
+        <div class="banner" id="newsBanner">
+            <div class="headline-container" id="headlineContainer"></div>
+        </div>
         <button class="banner-btn prev-btn"><</button>
         <button class="banner-btn next-btn">></button>
     </div>
